@@ -15,7 +15,7 @@ The R script **owg.R** proposes several functions to generate OWA weights using 
 
 A Shiny application has also been designed to visualize the obtained distribution and to download the associated weights. 
 
-https://maximelenormand.shinyapps.io/OWA-weights-generator
+https://maximelenormand.shinyapps.io/OWA_weights_generator/
 
 ## Citation
 
