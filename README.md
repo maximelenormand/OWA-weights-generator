@@ -21,7 +21,7 @@ https://maximelenormand.shinyapps.io/OWA_weights_generator/
 
 If you use this code, please cite:
 
-Lenormand M (2018) Generating OWA weights using truncated distributions. International Journal of Intelligent Systems 33, 791–801.
+Lenormand M (2018) Generating OWA weights using truncated distributions. *International Journal of Intelligent Systems* 33, 791–801.
 
 If you need help, find a bug, want to give me advice or feedback, please contact me!
 You can reach me at maxime.lenormand[at]irstea.fr
