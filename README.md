@@ -5,7 +5,7 @@ Generating OWA weights using truncated distributions
 
 This package is created to generate ordered weighted averaging (OWA) weights using truncated distributions as described in [1]. In this paper, we introduce an OWA determination method based on truncated distributions that enables intuitive generation of OWA weights according to a certain level of risk and trade-off. These two dimensions are represented by the two first moments of the truncated distribution. We illustrate our approach with the well-know normal distribution and the definition of a continuous parabolic decision-strategy space. We finally study the impact of the number of criteria on the results.
 
-[1] Lenormand M (2017) Generating OWA weights using truncated distributions. arXiv preprint arXiv:1609.03375.
+[1] Lenormand M (2018) Generating OWA weights using truncated distributions. *International Journal of Intelligent Systems* 33, 791–801.
 
 ## Contents of the package
 
