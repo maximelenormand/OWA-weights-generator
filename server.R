@@ -171,9 +171,32 @@ shinyServer( function(input, output) {
      }
    )
   
-  #Link to GitHub repository
-  output$credit = renderText({
-      "<font weight=bold><b>https://github.com/maximelenormand/OWG-owa-weights-generator</b></font>"
-  })  
+  #Parabolic decision-strategy space
+  output$para <- renderPlot({
+    
+      #Color blue if ok 
+      colo="steelblue"   
+     
+      #If not suitable solution found then RED
+      if(!suit()){
+        colo="#CC6666"
+      }
+     
+      #Parabole
+      x=seq(0,1,0.001)
+      y=-4*x^2+4*x
+    
+      #Plot
+      par(mar=c(5,5.5,1,1))
+      plot(x,y,type="l",lwd=4,col="black",axes=FALSE,xlab="",ylab="", xlim=c(0,1), ylim=c(0,1))
+      axis(1, cex.axis=1.5)
+      axis(2, cex.axis=1.5, las=2)
+      mtext("Risk", 1, cex=2, line=3.5)
+      mtext("Tradeoff", 2, cex=2, line=3.5)
+      box(lwd=1.5) 
+      
+      points(input$risk, input$tradeoff, col=colo, pch=16, cex=1.5)
+
+  })
   
 })
