@@ -20,7 +20,7 @@ shinyUI(fluidPage(title="OWA weights generator",
     div(" ", style="height:10px;"), 
     
     numericInput(inputId="nb_cri", 
-                 label="Number of Criteria", 
+                 label="Number of criteria", 
                  value=5, 
                  min = 2, 
                  max = 100000, 

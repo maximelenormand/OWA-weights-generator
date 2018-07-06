@@ -52,8 +52,7 @@ owg=function(n,risk,tradeoff,warn=TRUE){
         d=abs(risk-((seq(1,n,1)-1)/(n-1)))
         minindex=which(d==min(d))
         if(length(minindex)==2){
-            minindex=minindex[sample(2,2)]
-
+            minindex=minindex[sample(2,1)]
         }
         w[minindex]=1 
 
