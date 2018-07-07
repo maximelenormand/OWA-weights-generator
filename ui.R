@@ -46,7 +46,7 @@ shinyUI(fluidPage(title="OWA weights generator",
     
     p(strong("Source")),
 
-    HTML('The source code is  available <a href="https://github.com/maximelenormand/OWA-weights-generator" target=_blank>here</a>.')
+    HTML('The source code is  available <a href="https://gitlab.com/maximelenormand/OWA-weights-generator" target=_blank>here</a>.')
     
   ),
   
