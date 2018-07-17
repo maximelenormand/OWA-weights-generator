@@ -1,8 +1,87 @@
-#Import packages
-library(truncnorm)
-library(scales)
+############################################################################################################################
+# This script proposes several functions to generate OWA weights using the truncated normal distribution.
+# 
+# The main function owg automatically generates OWA weights according to a certain number of criteria, 
+# level of risk and level of tradeoff.
+#
+# Author: Maxime Lenormand
+############################################################################################################################
 
-options(warn=-1)
+#Import packages
+#library(truncnorm)
+#library(scales)
+
+#OWA order weights generator according to a certain number of criteria, level of risk and level of tradeoff
+#The function returns the order weights and a boolean that indicates whether the weights values are accurate or not
+#If warn=TRUE the function returns a warning if the risk and trade-off are not suitable 
+owg=function(n,risk,tradeoff,warn=TRUE){
+
+    #Initialize suitable
+    suit=TRUE
+
+    #Exception: Trade-off equal to 0
+    if(tradeoff==0){
+
+        w=rep(0,n)
+        
+        d=abs(risk-((seq(1,n,1)-1)/(n-1)))
+        minindex=which(d==min(d))
+        if(length(minindex)==2){
+            minindex=minindex[sample(2,1)]
+        }
+        w[minindex]=1 
+
+    #Trade-off in ]0,1]
+    }else{
+
+        # Warning if outside decision-strategy space
+        if((tradeoff > (4*risk*(1-risk)))){            
+            suit=FALSE
+            if(warn){
+                print("No suitable PDF found for these values of risk and trade-off")
+            }
+        }
+
+        # Generate mu and sd
+        maxsdw=(1/(2*sqrt(3)))
+
+        muw=risk
+        sdw=tradeoff*maxsdw
+        res=inv.moment.tnorm(muw,sdw)
+
+        mu=res$mu
+        sd=res$sd
+                
+        # Warning if generate values outside [0,1]^2
+        if(!(mu>=0 & mu<=1 & (sd/maxsdw)>=0 & (sd/maxsdw)<=1)){
+            suit=FALSE
+            if(warn){
+                print("No suitable PDF found for these values of risk and trade-off")
+            }
+        }
+
+        #Discretization
+        w=NULL
+        for(i in 0:(n-1)){
+            w=c(w,dtruncnorm(i/(n-1),0,1,mu,sd))
+        }
+        w=w/sum(w)
+        w=round(w, digits=5)
+
+        # Warning if w = NA, it may happen for very small tradeoff values
+        if(is.na(w[1])){
+            suit=FALSE
+            if(warn){
+                print("No suitable PDF found for these values of risk and trade-off")
+            }
+        }
+
+    }
+    
+    L=list(Weights=w, Suitable=suit)
+    return(L)
+    
+}
 
 #Return the truncated mean mu_w and the truncated standard deviation sd_w of a truncated normal distribution (mu,sd,0,1)
 #Definition from https://en.wikipedia.org/wiki/Truncated_normal_distribution
@@ -13,7 +92,7 @@ moment.tnorm=function(mu,sd){
   muw=mu+sd*(dnorm(alpha)-dnorm(beta))/(pnorm(beta)-pnorm(alpha))
   sdw=(1+(alpha*dnorm(alpha)-beta*dnorm(beta))/(pnorm(beta)-pnorm(alpha))-((dnorm(alpha)-dnorm(beta))/(pnorm(beta)-pnorm(alpha)))^2)
   sdw=sqrt((sd^2)*sdw)
-  
+
   res=list(muw=muw,sdw=sdw)
   return(res)
 
@@ -38,51 +117,6 @@ inv.moment.tnorm=function(muw,sdw){
      res=list(mu=opt$par[1],sd=opt$par[2],estmuw=mom$muw,estsdw=mom$sdw,err=opt$value)
      return(res)
 
-}
-
-#OWA order weights generator according to a certain number of criteria, level of risk and level of tradeoff
-#The function returns a warning if the risk and trade-off are not suitable (only if warn=TRUE)
-owg=function(n,risk,tradeoff,warn=TRUE){
-
-    #Exception: Trade-off equal to 0
-    if(tradeoff==0){
-
-        w=rep(0,n)
-        
-        d=abs(risk-((seq(1,n,1)-1)/(n-1)))
-        minindex=which(d==min(d))
-        if(length(minindex)==2){
-            minindex=minindex[sample(2,1)]
-        }
-        w[minindex]=1 
-
-    #Trade-off in ]0,1]
-    }else{
-
-        maxsdw=(1/(2*sqrt(3)))
-
-        muw=risk
-        sdw=tradeoff*maxsdw
-        res=inv.moment.tnorm(muw,sdw)
-
-        if((tradeoff > (4*risk*(1-risk))) & warn){
-            print("No suitable PDF found for these values of risk and trade-off")
-        }
-
-        mu=res$mu
-        sd=res$sd
-
-        #Discretization
-        w=NULL
-        for(i in 0:(n-1)){
-            w=c(w,dtruncnorm(i/(n-1),0,1,mu,sd))
-        }
-        w=w/sum(w)
-
-    }
-
-    return(w)
-    
 }
 
 #Orness & andness

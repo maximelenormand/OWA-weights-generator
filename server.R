@@ -1,22 +1,27 @@
 library(shiny)
+library(rgdal)
+library(rgeos)
+library(truncnorm)
+library(scales)
 
 source("owg.R")
+source("ED.R")
 
 options(scipen=999)
+options(warn=-1)
 
-shinyServer( function(input, output) {
+shinyServer(function(input, output) {
   
-    #Upper-bound sd_w
-    maxsdw=(1/(2*sqrt(3)))
+    ##### Single weight generation #####################################################################################
     
     #Warning if inconsistent level of risk and trade-off
     suit=reactive({
-      suit=TRUE
-      if(input$tradeoff > (4*input$risk*(1-input$risk))){
-        suit=FALSE
-      }
+      suit=owg(input$nb_cri,input$risk,input$tradeoff,warn=FALSE)$Suitable
       suit
     })  
+    
+    #Upper-bound sd_w
+    maxsdw=(1/(2*sqrt(3)))
     
     #Run the optimization process
     val=reactive({
@@ -25,7 +30,7 @@ shinyServer( function(input, output) {
     
     #Discretize weight distribution
     tab=reactive({
-      tab=as.numeric(owg(input$nb_cri,input$risk,input$tradeoff,warn=FALSE))  
+      tab=as.numeric(owg(input$nb_cri,input$risk,input$tradeoff,warn=FALSE)$Weights)  
     })
    
     #Plot
@@ -60,7 +65,7 @@ shinyServer( function(input, output) {
         if(!suit()){
           colo="#CC6666"
         }
-        
+
         #Particular case when sd is negative
         if(val$sd<0){
           colo="white"
@@ -148,7 +153,8 @@ shinyServer( function(input, output) {
   #Display table (cut if n>=16)
   output$table = renderTable({
     tab=tab() #OWA weights
-    tab=data.frame(t(cbind(tab,tab)))
+    tab2=tab
+    tab=data.frame(t(cbind(tab,tab2)))
     colnames(tab)=paste("W_",1:length(tab),sep="")
     if(dim(tab)[2]>=16){
       tab=tab[,1:16]
@@ -165,8 +171,7 @@ shinyServer( function(input, output) {
      },
      content = function(file) {
        tab=tab()
-       tab=data.frame(ID=paste("W_",1:length(tab),sep=""),Weights=tab)
-       #tab$Weights=format(tab$Weights, scientific=FALSE)
+       tab=data.frame(ID=paste("W_",1:length(tab),sep=""), Weights=tab)
        write.csv2(tab, file, row.names=FALSE)
      }
    )
@@ -182,21 +187,148 @@ shinyServer( function(input, output) {
         colo="#CC6666"
       }
      
-      #Parabole
+      #Parabola
       x=seq(0,1,0.001)
       y=-4*x^2+4*x
     
       #Plot
       par(mar=c(5,5.5,1,1))
-      plot(x,y,type="l",lwd=4,col="black",axes=FALSE,xlab="",ylab="", xlim=c(0,1), ylim=c(0,1))
+      plot(x,y,type="l",lwd=3,col="black",axes=FALSE,xlab="",ylab="", xlim=c(0,1), ylim=c(0,1))
       axis(1, cex.axis=1.5)
       axis(2, cex.axis=1.5, las=2)
       mtext("Risk", 1, cex=2, line=3.5)
       mtext("Tradeoff", 2, cex=2, line=3.5)
       box(lwd=1.5) 
+      segments(0,0,1,0, lwd=4,col="black")
       
       points(input$risk, input$tradeoff, col=colo, pch=16, cex=1.5)
 
   })
+  
+  ##### Experimental design #####################################################################################
+  
+  # Define your experimental design
+  pol=reactive({
+    pol=defED(shape=input$shape, center=c(input$centerx,input$centery), radius=input$radius)
+    pol
+  })
+  
+  # Generate your experimentale design
+  run=reactiveValues(run=NA)
+  
+  observeEvent(input$run, {
+    run$run=genED(input$nbsim,pol())
+  })
+  
+  observeEvent(input$nbsim,{
+    run$run=NA
+  })
+  observeEvent(input$shape,{
+    run$run=NA
+  })
+  observeEvent(input$centerx,{
+    run$run=NA
+  })
+  observeEvent(input$centery,{
+    run$run=NA
+  })
+  observeEvent(input$radius,{
+    run$run=NA
+  })
+  
+  # Choose your number of criteria
+  run2=reactiveValues(run2=NA)
+  
+  observeEvent(input$run2, {
+    run2$run2=ED(input$nbcri2,run$run)
+  })
+  
+  observeEvent(input$run, {
+    run2$run2=NA
+  })
+  observeEvent(input$nbsim,{
+    run2$run2=NA
+  })
+  observeEvent(input$nbcri2,{
+    run2$run2=NA
+  })
+  observeEvent(input$shape,{
+    run2$run2=NA
+  })
+  observeEvent(input$centerx,{
+    run2$run2=NA
+  })
+  observeEvent(input$centery,{
+    run2$run2=NA
+  })
+  observeEvent(input$radius,{
+    run2$run2=NA
+  })
+  
+  #Link to download the final table
+  output$output <- downloadHandler(
+    filename = function() {
+      paste('Experimental_Design','.csv', sep='')
+    },
+    content = function(file) {
+      write.csv2(run2$run2, file, row.names=FALSE)
+    }
+  )
+  
+  
+  # Parabolic decision-strategy space
+  output$para2 <- renderPlot({
+
+    #Parabola
+    x=seq(0,1,0.001)
+    y=-4*x^2+4*x
+    
+    #Plot
+    par(mar=c(5,5.5,1,1))
+    plot(x,y,type="l",lwd=4,col="black",axes=FALSE,xlab="",ylab="", xlim=c(0,1), ylim=c(0,1))
+    axis(1, cex.axis=1.5)
+    axis(2, cex.axis=1.5, las=2)
+    mtext("Risk", 1, cex=2, line=3.5)
+    mtext("Tradeoff", 2, cex=2, line=3.5)
+    box(lwd=1.5) 
+    segments(0,0,1,0, lwd=4,col="black")
+    
+    #Plot shape
+    colo="steelblue"
+    pol=pol()
+    if(is.na(pol)){
+      text(0.5, 0.5, "The shape is outside\nthe parabolic decision-strategy space", col="#CC6666", cex=2, font=2)
+    }else{
+      plot(pol, add=TRUE, col=alpha(colo, 0.5), border=colo,lwd=3)  
+    }
+
+    #Plot sample
+    if(sum(is.na(run$run))==0){
+        points(run$run, pch=16, cex=0.5, col=colo)
+    }
+    #points(input$risk, input$tradeoff, col=colo, pch=16, cex=1.5)
+    
+  })
+  
+  # Display download button 
+  output$run <- renderUI({
+    if(!is.na(pol())) {
+      actionButton("run", "Run")
+    }
+  })
+  
+  output$run2 <- renderUI({
+    if(sum(is.na(run$run))==0) {
+      actionButton("run2", "Run")
+    }
+  })
+  
+  output$download <- renderUI({
+    if(sum(is.na(run2$run2))==0) {
+      downloadButton('output', 'Download')
+    }
+  })
+  
+  
   
 })
