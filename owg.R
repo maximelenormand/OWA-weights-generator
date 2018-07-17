@@ -51,14 +51,6 @@ owg=function(n,risk,tradeoff,warn=TRUE){
 
         mu=res$mu
         sd=res$sd
-                
-        # Warning if generate values outside [0,1]^2
-        if(!(mu>=0 & mu<=1 & (sd/maxsdw)>=0 & (sd/maxsdw)<=1)){
-            suit=FALSE
-            if(warn){
-                print("No suitable PDF found for these values of risk and trade-off")
-            }
-        }
 
         #Discretization
         w=NULL
