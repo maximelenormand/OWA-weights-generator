@@ -19,8 +19,8 @@ owg=function(n,risk,tradeoff,warn=TRUE){
     #Initialize suitable
     suit=TRUE
 
-    #Exception: Trade-off equal to 0
-    if(tradeoff==0){
+    #Exception: Small Trade-off values
+    if(tradeoff<0.01){
 
         w=rep(0,n)
         
@@ -40,6 +40,7 @@ owg=function(n,risk,tradeoff,warn=TRUE){
             if(warn){
                 print("No suitable PDF found for these values of risk and trade-off")
             }
+            w=rep(NA,n)
         }
 
         # Generate mu and sd
@@ -66,6 +67,15 @@ owg=function(n,risk,tradeoff,warn=TRUE){
             if(warn){
                 print("No suitable PDF found for these values of risk and trade-off")
             }
+        }
+
+        # Warning if sd < 0
+        if(sd<0){
+            suit=FALSE
+            if(warn){
+                print("No suitable PDF found for these values of risk and trade-off")
+            }
+            w=rep(NA,n)
         }
 
     }

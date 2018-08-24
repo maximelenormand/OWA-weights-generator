@@ -15,7 +15,7 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
       ),
     
       #Panel 
-      absolutePanel(id = "control", class = "panel panel-default", fixed = TRUE,
+      absolutePanel(id = "control", class = "panel panel-default", fixed = FALSE,
                     draggable = FALSE, top = 80, left = "auto", right = 20, bottom = "auto",
                     width = 360, height = "auto",
                     
@@ -116,9 +116,9 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
         ),
         
         #Panels
-        absolutePanel(id = "control1", class = "panel panel-default", fixed = TRUE,
+        absolutePanel(id = "control1", class = "panel panel-default", fixed = FALSE,
                       draggable = FALSE, top = 60, left = 30, right = "auto", bottom = "auto",
-                      width = 350, height = "390",
+                      width = 350, height = "820",
 
                       div(" ", style="height:10px;"),
                       
@@ -152,17 +152,7 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
                                   value = 0.2, 
                                   min = 0.01, 
                                   max = 1,
-                                  step=0.01)
-                      
-                      #p(strong("Parabolic decision-strategy space")),
-                      
-                      #plotOutput("para2", height = 320, width=320)
-                      
-        ),
-        
-        absolutePanel(id = "control1", class = "panel panel-default", fixed = TRUE,
-                      draggable = FALSE, top = 500, left = 30, right = "auto", bottom = "auto",
-                      width = 350, height = "110",
+                                  step=0.01),
                       
                       div(" ", style="height:10px;"),
                       
@@ -180,15 +170,9 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
                       div(" ", style="height:5px;"),
                       
                       uiOutput("run"),
-                      tags$style(type='text/css', "#run {width:130px;float:left;}")
+                      tags$style(type='text/css', "#run {width:130px;float:left;}"),
 
-        ),
-        
-        absolutePanel(id = "control1", class = "panel panel-default", fixed = TRUE,
-                      draggable = FALSE, top = 700, left = 30, right = "auto", bottom = "auto",
-                      width = 350, height = "107",
-                      
-                      div(" ", style="height:10px;"),
+                      div(" ", style="height:50px;"),
                       
                       HTML('<div style="margin-left:-24px;font-size:130%;font-weight:bold;">3. Choose the number of criteria</div>'), 
                       
