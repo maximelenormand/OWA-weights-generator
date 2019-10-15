@@ -14,7 +14,7 @@ The R script  **ED.R** proposes several functions to design an experimental desi
 
 ## Interactive web application
 
-A Shiny application has also been designed to visualize the obtained distribution, to download the associated weights and to design experimental deigns.This repository contains all the material (R scripts, Rdata and WWW data folder) needed to run the [app](https://maximelenormand.shinyapps.io/OWA_weights_generator/). 
+A Shiny application has also been designed to visualize the obtained distribution, to download the associated weights and to design experimental deigns.This repository contains all the material (R scripts, Rdata and WWW data folder) needed to run the [app](http://shiny.umr-tetis.fr/OWA/). 
 
 ## Citation
 
