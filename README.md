@@ -7,14 +7,17 @@ This project contains several R function to generate ordered weighted averaging 
 
 ## Contents of the package
 
-The R script **owg.R** proposes several functions to generate OWA weights according to a certain level of risk and trade-off using the truncated normal distribution.
+The R script **owg.R** proposes several functions to generate OWA weights according to a certain level of risk and trade-off using truncated normal distributions.
 
 The R script  **ED.R** proposes several functions to design an experimental design and automatically generate OWA weights according to a certain number of criteria and a list of couple of risk and trade-off values.
 
+## Example
+
+An example of use of these scripts in a GIS-MCDA context can be found in [this study](https://www.maximelenormand.com/Publications#gismcdaowapaper). Code and data used in this study are available [here](https://www.maximelenormand.com/Codes#gismcdaowacode).
 
 ## Interactive web application
 
-A Shiny application has also been designed to visualize the obtained distribution, to download the associated weights and to design experimental deigns.This repository contains all the material (R scripts, Rdata and WWW data folder) needed to run the [app](http://shiny.umr-tetis.fr/OWA/). 
+A Shiny application has also been designed to visualize the obtained distribution, to download the associated weights and to design experimental deigns. This repository contains all the material (R scripts, Rdata and WWW data folder) needed to run the [app](http://shiny.umr-tetis.fr/OWA/).
 
 ## Citation
 
