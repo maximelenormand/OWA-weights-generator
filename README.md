@@ -23,7 +23,7 @@ A Shiny application has also been designed to visualize the obtained distributio
 
 If you use this code, please cite:
 
-[1] Lenormand M (2018) [Generating OWA weights using truncated distributions.](https://onlinelibrary.wiley.com/doi/full/10.1002/int.21963) *International Journal of Intelligent Systems* 33, 791–801.
+[1] Lenormand M (2018) [Generating OWA weights using truncated distributions.](https://www.maximelenormand.com/Publications#owapaper) *International Journal of Intelligent Systems* 33, 791–801.
 
 If you need help, find a bug, want to give me advice or feedback, please contact me!
 You can reach me at maxime.lenormand[at]inrae.fr
