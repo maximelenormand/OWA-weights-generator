@@ -1,9 +1,10 @@
+# Import packages
 library(shiny)
 library(shinyWidgets)
 
 # UI
 shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weight:bold;">Generating OWA weights using truncated distributions&nbsp;&nbsp;</span></a>'),
-                   windowTitle="OWA weights generator",
+                   windowTitle="OWA",
 
   ##### Single weight generation #####################################################################################
   tabPanel(HTML('<span style="font-size:100%;color:white;font-weight:bold;">Single generation</span></a>'),                   
@@ -75,7 +76,7 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
         HTML(
           '<div style="max-width:900px; word-wrap:break-word;">
               <p style="font-size:120%;text-align:justify">
-                  The source code is  available <a href="http://www.maximelenormand.com/Codes" target=_blank>here</a>.
+                  The source code is  available <a href="https://gitlab.com/maximelenormand/OWA-weights-generator" target=_blank>here</a>.
                 </p>
             </div>'
         ), 
@@ -102,7 +103,13 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
         
         tableOutput('table'),
         
-        downloadButton('download_w', 'Download')
+        downloadButton('download_w', 'Download'),
+      
+      # SK8 footer
+      div(
+        class="footer",
+        includeHTML("footer.html")
+      )
 
   ),
       
@@ -163,9 +170,9 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
                       sliderInput("nbsim",
                                   label = "Number of simulations", 
                                   value = 1000, 
-                                  min = 0, 
+                                  min = 10, 
                                   max = 10000,
-                                  step=10),
+                                  step = 10),
                       
                       div(" ", style="height:5px;"),
                       
@@ -195,7 +202,13 @@ shinyUI(navbarPage(title=HTML('<span style="font-size:120%;color:white;font-weig
 
         plotOutput("para2", height = 600, width=600),
         tags$style(type="text/css",
-                   "#para2 img{display:block;margin-top:10%;margin-bottom:auto;margin-left:70%;margin-right:auto;}")
+                   "#para2 img{display:block;margin-top:10%;margin-bottom:auto;margin-left:70%;margin-right:auto;}"),
+        
+        # SK8 footer
+        div(
+          class="footer",
+          includeHTML("footer.html")
+        )
         
         
   )

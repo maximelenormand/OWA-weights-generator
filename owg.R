@@ -1,20 +1,16 @@
-############################################################################################################################
-# This script proposes several functions to generate OWA weights using the truncated normal distribution.
-# 
-# The main function owg automatically generates OWA weights according to a certain number of criteria, 
-# level of risk and level of tradeoff.
-#
-# Author: Maxime Lenormand
-############################################################################################################################
-
 #Import packages
 #library(truncnorm)
 #library(scales)
 
-#OWA order weights generator according to a certain number of criteria, level of risk and level of tradeoff
-#The function returns the order weights and a boolean that indicates whether the weights values are accurate or not
-#If warn=TRUE the function returns a warning if the risk and trade-off are not suitable 
-owg=function(n,risk,tradeoff,warn=TRUE){
+# OWA order weights generator according to a certain number of criteria, level of 
+# risk and level of tradeoff. The function returns the order weights and a 
+# boolean that indicates whether the weights values are accurate or not. If 
+# warn=TRUE the function returns a warning if the risk and trade-off are not 
+# suitable. 
+owg=function(n,
+             risk,
+             tradeoff,
+             warn=TRUE){
 
     #Initialize suitable
     suit=TRUE
@@ -85,8 +81,9 @@ owg=function(n,risk,tradeoff,warn=TRUE){
     
 }
 
-#Return the truncated mean mu_w and the truncated standard deviation sd_w of a truncated normal distribution (mu,sd,0,1)
-#Definition from https://en.wikipedia.org/wiki/Truncated_normal_distribution
+# Return the truncated mean mu_w and the truncated standard deviation sd_w of a 
+# truncated normal distribution (mu,sd,0,1)
+# Definition from https://en.wikipedia.org/wiki/Truncated_normal_distribution
 moment.tnorm=function(mu,sd){
   
   alpha=(0-mu)/sd
@@ -100,9 +97,11 @@ moment.tnorm=function(mu,sd){
 
 }
 
-#Return the mean mu and the standard deviation sd of a truncated normal distribution (mu,sd,0,1)
-#according to the truncated mean mu_w and the truncated standard deviation sd_w
-#The function also returns the estimated mu_w and sd_w and an error of estimation (L2)
+# Return the mean mu and the standard deviation sd of a truncated normal 
+# distribution (mu,sd,0,1) according to the truncated mean mu_w and the 
+# truncated standard deviation sd_w.
+# The function also returns the estimated mu_w and sd_w and an 
+# error of estimation (L2).
 inv.moment.tnorm=function(muw,sdw){
 
      #Function to minimize, distance between actual and simulated moments

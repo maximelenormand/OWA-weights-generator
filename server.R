@@ -1,15 +1,18 @@
+# Import packages
 library(shiny)
-library(rgdal)
-library(rgeos)
 library(truncnorm)
 library(scales)
+library(sf)
 
+# Load functions
 source("owg.R")
 source("ED.R")
 
+# Options
 options(scipen=999)
 options(warn=-1)
 
+# SERVER
 shinyServer(function(input, output) {
   
     ##### Single weight generation #####################################################################################
@@ -297,7 +300,10 @@ shinyServer(function(input, output) {
     colo="steelblue"
     pol=pol()
     if(is.na(pol)){
-      text(0.5, 0.5, "The shape is outside\nthe parabolic decision-strategy space", col="#CC6666", cex=2, font=2)
+      text(0.5, 0.5, "The shape is outside\nthe parabolic decision-strategy space", 
+           col="#CC6666", 
+           cex=2, 
+           font=2)
     }else{
       plot(pol, add=TRUE, col=alpha(colo, 0.5), border=colo,lwd=3)  
     }
