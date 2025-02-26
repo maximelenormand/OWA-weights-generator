@@ -37,9 +37,9 @@ distribution, to download the associated weights and to design experimental
 deigns. This repository contains all the materials (R scripts, Rdata and www data
 folder) needed to run [the app](https://owa.sk8.inrae.fr).
 
-## Citation
+## Reference and citation
 
-If you use this code, please cite:
+If you use this code, please cite the following reference:
 
 [1] Lenormand M (2018) [Generating OWA weights using truncated distributions.](https://onlinelibrary.wiley.com/doi/full/10.1002/int.21963) 
 *International Journal of Intelligent Systems* 33, 791–801. [[arXiv](https://arxiv.org/abs/1709.04328)]
