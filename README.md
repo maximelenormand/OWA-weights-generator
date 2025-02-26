@@ -13,7 +13,7 @@ with the well-know normal distribution and the definition of a continuous
 parabolic decision-strategy space. We finally study the impact of the number 
 of criteria on the results.
 
-## Contents of the package
+## Scripts
 
 The R script **owg.R** proposes several functions to generate OWA weights 
 according to a certain level of risk and trade-off using truncated normal 
